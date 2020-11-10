@@ -77,8 +77,12 @@ float* SoundSamples::getSampleList() const {
     return sampleList;
 }
 
-void SoundSamples::setSampleList(float* newSampleList) {
-    sampleList = newSampleList;
+void SoundSamples::setSampleList(float* newSampleList, int size) {
+    delete[] sampleList;
+    sampleList = new float[size];
+    for (int i = 0; i < size; i++) {
+        sampleList[i] = newSampleList[i];
+    }
 }
 
 int SoundSamples::getNumSamples() const {

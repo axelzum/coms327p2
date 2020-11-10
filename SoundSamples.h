@@ -11,7 +11,7 @@ class SoundSamples {
         float& operator[](const int& rhs);
         SoundSamples operator+(const SoundSamples& rhs);
         float* getSampleList() const;
-        void setSampleList(float* newSampleList);
+        void setSampleList(float* newSampleList, int size);
         int getNumSamples() const;
         void setNumSamples(int newNumSamples);
         float getSampleRate() const;
