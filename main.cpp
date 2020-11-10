@@ -1,21 +1,64 @@
 #include "SoundSamples.h"
 #include "wave.h"
+#include "soundio.h"
 
 #include <iostream>
 #include <cmath>
+#include <string>
 using namespace std;
 
 int main(int argc, char const *argv[]) {
-    cout << "Part2 Tests" << endl;
 
+    int wave;
+    float sample_rate, frequency, duration;
+    string filename;
 
-    Wave *w = new SineWave("MySineWave");
-    SoundSamples *s = w->generateSamples(400, 8000, 2.5);
+    cout << "Input wave type (1 ,2, 3, or 4):" << endl;
+    cin >> wave;
+    cout << "Input sample rate:" << endl;
+    cin >> sample_rate;
+    cout << "Input frequency:" << endl;
+    cin >> frequency;
+    cout << "Input duration:" << endl;
+    cin >> duration;
+    cout << "Input filename:" << endl;
+    cin >> filename;
+
+    if (wave == 1) {
+        Wave *w = new SineWave("MySineWave");
+        SoundSamples *s = w->generateSamples(frequency, sample_rate, duration);
+        SoundIO::OutputSound(s, filename);
+    }
+    else if (wave == 2) {
+        Wave *w = new SquareWave("MySquareWave");
+        SoundSamples *s = w->generateSamples(frequency, sample_rate, duration);
+        SoundIO::OutputSound(s, filename);
+    }
+    else if (wave == 3) {
+        Wave *w = new TriangleWave("MyTriangleWave");
+        SoundSamples *s = w->generateSamples(frequency, sample_rate, duration);
+        SoundIO::OutputSound(s, filename);
+    }
+    else if (wave == 4) {
+        Wave *w = new SawtoothWave("MySawWave");
+        SoundSamples *s = w->generateSamples(frequency, sample_rate, duration);
+        SoundIO::OutputSound(s, filename);
+    }
+
+    return 0;
+
+    /*
+
+    Wave *w = new TriangleWave("MySineWave");
+    SoundSamples *s = w->generateSamples(5, 12, 1);
 
     cout << w->getWaveName() << endl;
     for (int i = 0; i < s->getNumSamples(); i++) {
         cout << s->getSampleList()[i] << endl;
     }
+
+    SoundIO::OutputSound(s, "out.txt");
+    */
 
 
 
@@ -60,6 +103,4 @@ int main(int argc, char const *argv[]) {
         cout << combined[i] << endl;
     }
     */
-
-    return 0;
 }

@@ -53,7 +53,13 @@ TriangleWave::TriangleWave(string name) : Wave(name) {
 }
 
 float TriangleWave::generateFunction(float time) {
-    //todo
+    float t = time - (int) time;
+    if (t < 0.5) {
+        return 4 * t - 1;
+    }
+    else {
+        return -4 * t + 3;
+    }
 }
 
 SawtoothWave::SawtoothWave(string name) : Wave(name) {
@@ -61,4 +67,5 @@ SawtoothWave::SawtoothWave(string name) : Wave(name) {
 
 float SawtoothWave::generateFunction(float time) {
     //todo
+    return 0;
 }
