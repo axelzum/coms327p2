@@ -16,6 +16,8 @@ class SoundSamples {
         void setNumSamples(int newNumSamples);
         float getSampleRate() const;
         void setSampleRate(int newSampleRate);
+        void reverb2(float delay, float attenuation);
+        void adsr(float atime, float alevel, float dtime, float slevel, float rtime);
     private:
         float* sampleList;
         int numSamples;
