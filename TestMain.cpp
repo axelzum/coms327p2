@@ -9,41 +9,65 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
 
-    /*
-    cout << "Part1 Tests" << endl;
+    int wave;
+    float delay, attenuation, atime, alevel, dtime, slevel, rtime;
+    string filename;
 
-    float samps[16] = {.1,.2,.3,.2,.1,0,0,.1,.2,.2,.1,.2,.3,.3,.2,.1};
-    SoundSamples sounds = SoundSamples(samps, 16, 2);
+    cout << "Input wave type (1 (Sine), 2 (Square), 3 (Triangle), or 4(Saw)):" << endl;
+    cin >> wave;
+    while (wave < 1 || wave > 4) {
+        cout << "Invalid wave type. Input a number 1-4." << endl;
+        cin >> wave;
+    }
+    cout << "Input Delay:" << endl;
+    cin >> delay;
+    cout << "Input Attenuation:" << endl;
+    cin >> attenuation;
+    cout << "Input Attack Time:" << endl;
+    cin >> atime;
+    cout << "Input Attack Level:" << endl;
+    cin >> alevel;
+    cout << "Input Decay Time:" << endl;
+    cin >> dtime;
+    cout << "Input Sustain Level:" << endl;
+    cin >> slevel;
+    cout << "Input Release Time:" << endl;
+    cin >> rtime;
+    cout << "Input filename:" << endl;
+    cin >> filename;
 
-    for (int i = 0; i < sounds.getNumSamples(); i++) {
-        cout << sounds.getSampleList()[i] << endl;
+    Wave *w;
+    if (wave == 1) {
+        w = new SineWave("MySineWave");
+    }
+    else if (wave == 2) {
+        w = new SquareWave("MySquareWave");
+    }
+    else if (wave == 3) {
+        w = new TriangleWave("MyTriangleWave");
+    }
+    else if (wave == 4) {
+        w = new SawtoothWave("MySawWave");
     }
 
-    sounds.reverb2(2, 0.2);
-    cout << endl << endl;
-
-    for (int i = 0; i < sounds.getNumSamples(); i++) {
-        cout << sounds.getSampleList()[i] << endl;
+    SoundSamples *output = new SoundSamples(0, 44100);
+    SoundIO::OutputSound(output, filename);
+    delete output;
+    int keyNumber;
+    cout << "Input a note number or a negative number to output notes to the file." << endl;
+    cin >> keyNumber;
+    while (keyNumber >= 0) {
+        float frequency = pow(2,(keyNumber-49)/12) * 440;
+        SoundSamples *note = w->generateSamples(frequency, 44100, 1);
+        note->reverb2(delay, attenuation);
+        note->adsr(atime, alevel, dtime, slevel, rtime);
+        SoundIO::OutputSoundStream(note, filename);
+        SoundSamples *silence = new SoundSamples(0.25 * 44100, 44100);
+        SoundIO::OutputSoundStream(silence, filename);
+        delete silence;
+        cout << "Input a note number or a negative number to output notes to the file." << endl;
+        cin >> keyNumber;
     }
-    */
-
-    /*
-    cout << "Part2 Tests" << endl;
-
-    float samps[17] = {.4,.3,.2,.2,.1,.2,.3,.2,.2,.1,.5,.1,.2,.3,.4,.4,.3};
-    SoundSamples sounds = SoundSamples(samps, 17, 1);
-
-    for (int i = 0; i < sounds.getNumSamples(); i++) {
-        cout << sounds.getSampleList()[i] << endl;
-    }
-
-    sounds.adsr(4,0.5,4,0.25,4);
-    cout << endl << endl;
-
-    for (int i = 0; i < sounds.getNumSamples(); i++) {
-        cout << sounds.getSampleList()[i] << endl;
-    }
-    */
 
     return 0;
 }
