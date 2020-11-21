@@ -33,7 +33,7 @@ SineWave::SineWave(string name) : Wave(name) {
 }
 
 float SineWave::generateFunction(float time) {
-    return sin(time);
+    return sin(2 * M_PI * time);
 }
 
 SquareWave::SquareWave(string name) : Wave(name) {
