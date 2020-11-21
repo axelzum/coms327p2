@@ -7,6 +7,11 @@
 #include <string>
 using namespace std;
 
+/*
+ *  Prompt user for wave type, reverb and adsr parameters and a filename.
+ *  Then allows the input of note values until finished appending the sound
+ *  waves to the file with .25 seconds of silence inbetween.
+ */
 int main(int argc, char const *argv[]) {
 
     int wave;
@@ -36,6 +41,7 @@ int main(int argc, char const *argv[]) {
     cout << "Input filename:" << endl;
     cin >> filename;
 
+    //Sets the type of the wave to be used for all sounds.
     Wave *w;
     if (wave == 1) {
         w = new SineWave("MySineWave");
@@ -56,7 +62,9 @@ int main(int argc, char const *argv[]) {
     int keyNumber;
     cout << "Input a note number or a negative number to output notes to the file." << endl;
     cin >> keyNumber;
+    //Operates on a loop taking in a new note repeatedly until a negative number is entered.
     while (keyNumber >= 0) {
+        //Translate note number into a frequency.
         float frequency = pow(2,(keyNumber-49)/12) * 440;
         SoundSamples *note = w->generateSamples(frequency, 44100, 1);
         note->reverb2(delay, attenuation);

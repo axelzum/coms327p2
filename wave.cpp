@@ -8,6 +8,9 @@ Wave::Wave(string name) {
     waveName = name;
 }
 
+/*
+ *  Generates a wave of this objects type with specified frequency, rate, and duration
+ */
 SoundSamples* Wave::generateSamples(float frequency, float sample_rate, float duration) {
     float outputSamples = sample_rate * duration;
     SoundSamples *output =  new SoundSamples((int)outputSamples, sample_rate);
@@ -32,6 +35,9 @@ string Wave::getWaveName() const {
 SineWave::SineWave(string name) : Wave(name) {
 }
 
+/*
+ *  Generates a sine wave
+ */
 float SineWave::generateFunction(float time) {
     return sin(2 * M_PI * time);
 }
@@ -39,6 +45,9 @@ float SineWave::generateFunction(float time) {
 SquareWave::SquareWave(string name) : Wave(name) {
 }
 
+/*
+ *  Generates a square wave
+ */
 float SquareWave::generateFunction(float time) {
     float t = time - (int) time;
     if (t < 0.5) {
@@ -52,6 +61,9 @@ float SquareWave::generateFunction(float time) {
 TriangleWave::TriangleWave(string name) : Wave(name) {
 }
 
+/*
+ *  Generates a triangle wave
+ */
 float TriangleWave::generateFunction(float time) {
     float t = time - (int) time;
     if (t < 0.5) {
@@ -65,6 +77,9 @@ float TriangleWave::generateFunction(float time) {
 SawtoothWave::SawtoothWave(string name) : Wave(name) {
 }
 
+/*
+ *  Generates a sawtooth wave
+ */
 float SawtoothWave::generateFunction(float time) {
     float t = time - (int) time;
     return 2 * t - 1;

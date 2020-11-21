@@ -3,10 +3,16 @@
 #include <iostream>
 using namespace std;
 
+/*
+ *  Default SoundSamples constructor. No samples at a sample rate of 8000.
+ */
 SoundSamples::SoundSamples() : numSamples(0), sampleRate(8000) {
     sampleList = new float[0];
 }
 
+/*
+ *  Constructs a SoundSamples object already filled with samples at a given rate.
+ */
 SoundSamples::SoundSamples(float* samples, int length, float rate) :
     numSamples(length),
     sampleRate(rate) {
@@ -16,6 +22,9 @@ SoundSamples::SoundSamples(float* samples, int length, float rate) :
         }
 }
 
+/*
+ *  Constructs a SoundSamples object of a given length and rate of silence (zeros)
+ */
 SoundSamples::SoundSamples(int length, float rate) :
     sampleList(new float[length]),
     numSamples(length),
@@ -25,6 +34,9 @@ SoundSamples::SoundSamples(int length, float rate) :
         }
 }
 
+/*
+ *  SoundSamples copy constructor.
+ */
 SoundSamples::SoundSamples(const SoundSamples& objToCopy) :
     sampleList(new float[objToCopy.numSamples]),
     numSamples(objToCopy.numSamples),
@@ -34,6 +46,9 @@ SoundSamples::SoundSamples(const SoundSamples& objToCopy) :
         }
 }
 
+/*
+ *  SoundSamples = operator
+ */
 SoundSamples& SoundSamples::operator=(const SoundSamples& objToCopy) {
     if (this != &objToCopy) {
         delete[] sampleList;
@@ -47,6 +62,9 @@ SoundSamples& SoundSamples::operator=(const SoundSamples& objToCopy) {
     return *this;
 }
 
+/*
+ *  SoundSamples [] operator
+ */
 float& SoundSamples::operator[](const int& index) {
     if (index < 0 || index > numSamples-1) {
         throw out_of_range("Index is out of the bounds of the sampleList.");
@@ -55,6 +73,9 @@ float& SoundSamples::operator[](const int& index) {
     return sampleList[index];
 }
 
+/*
+ *  SoundSamples + operator creates a new SoundSamples of the first appended with the second SoundSamples.
+ */
 SoundSamples SoundSamples::operator+(const SoundSamples& rhs) {
     if (sampleRate != rhs.sampleRate) {
         throw runtime_error("SoundSamples addition operands do not have the same sample rate.");
@@ -77,6 +98,9 @@ float* SoundSamples::getSampleList() const {
     return sampleList;
 }
 
+/*
+ *  Resize the SoundSamples object and give a new list of samples.
+ */
 void SoundSamples::setSampleList(float* newSampleList, int size) {
     delete[] sampleList;
     sampleList = new float[size];
@@ -101,6 +125,9 @@ void SoundSamples::setSampleRate(int newSampleRate) {
     sampleRate = newSampleRate;
 }
 
+/*
+ *  Adds a reverb effect to the sound samples in this object given a delay and attenuation.
+ */
 void SoundSamples::reverb2(float delay, float attenuation) {
     float* newSamples = new float[numSamples];
     for (int i = 0; i < numSamples; i++) {
@@ -116,6 +143,9 @@ void SoundSamples::reverb2(float delay, float attenuation) {
     delete[] newSamples;
 }
 
+/*
+ *  Adds an adsr effect to the SoundSamples object.
+ */
 void SoundSamples::adsr(float atime, float alevel, float dtime, float slevel, float rtime) {
     if ((atime + dtime + rtime) > (sampleRate * numSamples)) {
         throw runtime_error("ADSR time values are greater than the length of the sound sample. Try smaller values.");
@@ -134,20 +164,24 @@ void SoundSamples::adsr(float atime, float alevel, float dtime, float slevel, fl
 
     int i;
     float level = 0;
+    //Multiplier for attack
     int asamples = atime * sampleRate;
     for (i = 0; i < asamples; i++) {
         newSamples[i] *= level;
         level += alevel / asamples;
     }
+    //Multiplier for decay
     int dsamples = dtime * sampleRate;
     for (i = i; i < asamples + dsamples; i++) {
         newSamples[i] *= level;
         level -= (alevel - slevel) / dsamples;
     }
+    //Multiplier for sustain
     int rsamples = rtime * sampleRate;
     for (i = i; i < (numSamples - rsamples) - 1; i++) {
         newSamples[i] *= level;
     }
+    //Multiplier for release
     for (i = i; i < numSamples; i++) {
         newSamples[i] *= level;
         level -= slevel / rsamples;

@@ -4,6 +4,9 @@
 #include <iostream>
 #include <fstream>
 
+/*
+ *  Outputs the given sound samples to a file. If file already exists it is overritten.
+ */
 void SoundIO::OutputSound(SoundSamples *samples, string filename) {
     ofstream file;
     file.open(filename);
@@ -19,8 +22,12 @@ void SoundIO::OutputSound(SoundSamples *samples, string filename) {
     file.close();
 }
 
+/*
+ *  Outputs the given sound samples to a file. If file already exists it is appended to.
+ */
 void SoundIO::OutputSoundStream(SoundSamples *samples, string filename) {
     ofstream file;
+    //Open file with append enabled.
     file.open(filename, ofstream::out | ofstream::app);
 
     if (!file.is_open()) {
