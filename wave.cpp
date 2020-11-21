@@ -14,10 +14,10 @@ SoundSamples* Wave::generateSamples(float frequency, float sample_rate, float du
 
     float* temp = new float[(int)outputSamples];
 
-    float radians = 0.0;
+    float time = 0.0;
     for(int i = 0; i < outputSamples; i++) {
-        temp[i] = generateFunction(radians * frequency);
-        radians += 1.0 / sample_rate;
+        temp[i] = generateFunction(time * frequency);
+        time += 1.0 / sample_rate;
     }
 
     output->setSampleList(temp, (int)outputSamples);
@@ -66,6 +66,6 @@ SawtoothWave::SawtoothWave(string name) : Wave(name) {
 }
 
 float SawtoothWave::generateFunction(float time) {
-    //todo
-    return 0;
+    float t = time - (int) time;
+    return 2 * t - 1;
 }
